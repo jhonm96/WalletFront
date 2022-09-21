@@ -16,7 +16,8 @@ export class LoginComponent implements OnInit {
     private user: UserService
   ) {}
 
-  arreglo_enviar!: Usuario;
+  dataResponse: any|null
+  arreglo_enviar:Array<Usuario>=new Array<Usuario>();
 
   ngOnInit() {}
 
@@ -25,31 +26,39 @@ export class LoginComponent implements OnInit {
       .loginWithGoogle()
       .then((response) => {
         console.log(response);
-
-        this.arreglo_enviar.nombre! = response.user.displayName!;
-        this.arreglo_enviar.email! = response.user.email!;
-        // this.arreglo_enviar.id! = response.user.id;
-        this.arreglo_enviar.telefono! = response.user.phoneNumber!;
+        this.dataResponse= response
+        this.dataResponse.forEach((game: any) =>{
+          const obj={
+          nombre: game.displayName,
+          email: game.email,
+          telefono: game.phoneNumber} as Usuario
+          this.arreglo_enviar.push(obj);
+          console.log(this.arreglo_enviar);
+        // this.arreglo_enviar.nombre! = response.user.displayName!;
+        //this.arreglo_enviar.email!=response.user.email?.valueOf();
+        //  this.arreglo_enviar.id! = response.user.id;
+        // this.arreglo_enviar.telefono! = response.user.phoneNumber!.valueOf();     
 
         //  this.router.navigate(['/home']);
         //  this.user.newUser()
-        this.verificacionTelefono(this.arreglo_enviar);
+        // this.verificacionTelefono(this.arreglo_enviar);
+        
       })
 
-      .catch((error) => console.log(error));
+      .catch((error:any) => console.log(error));
   }
-  verificacionTelefono(arreglo_enviar: Usuario) {
-    this.user.verificarUsuarioPost(this.arreglo_enviar).subscribe({
-      next: (res) => {
-        console.log(res);
-        // if(res.){
-        //   //  this.router.navigate(['/home']);
-        // }
-        // if(res.){
-        //   //  this.router.navigate(['/registrarse']);
-
-        // }
-      },
-    });
-  }
+  
+  // verificacionTelefono(arreglo_enviar: Usuario) {
+  //   this.user.verificarUsuarioPost(this.arreglo_enviar).subscribe({
+  //     next: (res) => {
+  //       console.log(res);
+  //       // if(res.){
+  //       //   //  this.router.navigate(['/home']);
+  //       // }
+  //       // if(res.){
+  //       //   //  this.router.navigate(['/registrarse']);
+  //       // }
+  //     },
+  //   });
+  //}
 }
