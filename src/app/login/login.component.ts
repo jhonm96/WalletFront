@@ -16,49 +16,75 @@ export class LoginComponent implements OnInit {
     private user: UserService
   ) {}
 
-  dataResponse: any|null
-  arreglo_enviar:Array<Usuario>=new Array<Usuario>();
+  dataResponse: any | null;
+  arreglo_enviar: Array<Usuario> = new Array<Usuario>();
+
+  // id!: any;
+  // nombre!: any;
+  // email!: any;
+  // telefono!: any;
+
+  nuevo_arreglo: any;
 
   ngOnInit() {}
 
   onClick() {
-    this.auth
-      .loginWithGoogle()
-      .then((response) => {
-        console.log(response);
-        this.dataResponse= response
-        this.dataResponse.forEach((game: any) =>{
-          const obj={
-          nombre: game.displayName,
-          email: game.email,
-          telefono: game.phoneNumber} as Usuario
-          this.arreglo_enviar.push(obj);
-          console.log(this.arreglo_enviar);
-        // this.arreglo_enviar.nombre! = response.user.displayName!;
-        //this.arreglo_enviar.email!=response.user.email?.valueOf();
-        //  this.arreglo_enviar.id! = response.user.id;
-        // this.arreglo_enviar.telefono! = response.user.phoneNumber!.valueOf();     
+    this.auth.loginWithGoogle().then((response) => {
+      console.log(response.user.displayName);
 
-        //  this.router.navigate(['/home']);
-        //  this.user.newUser()
-        // this.verificacionTelefono(this.arreglo_enviar);
-        
-      })
+      this.nuevo_arreglo = {
+        nombre: response.user.displayName,
+        email: response.user.email,
+        telefono: response.user.phoneNumber,
+        id: response.user.uid,
+      };
+      console.log(this.nuevo_arreglo);
+      this.verificacionTelefono(this.nuevo_arreglo);
 
-      .catch((error:any) => console.log(error));
+      this.dataResponse = response;
+    });
   }
-  
-  // verificacionTelefono(arreglo_enviar: Usuario) {
-  //   this.user.verificarUsuarioPost(this.arreglo_enviar).subscribe({
-  //     next: (res) => {
-  //       console.log(res);
-  //       // if(res.){
-  //       //   //  this.router.navigate(['/home']);
-  //       // }
-  //       // if(res.){
-  //       //   //  this.router.navigate(['/registrarse']);
-  //       // }
-  //     },
-  //   });
-  //}
+  verificacionTelefono(nuevo_arreglo: Usuario) {
+    console.log(nuevo_arreglo)
+    this.user.verificarUsuarioPost(nuevo_arreglo).subscribe({
+      next: (res) => {
+        console.log(res);
+        // if(res.){
+        //   //  this.router.navigate(['/home']);
+        // }
+        // if(res.){
+        //   //  this.router.navigate(['/registrarse']);
+        // }
+      },
+    });
+  }
 }
+// this.dataResponse
+//   .forEach((user: any) => {
+//     const obj = {
+//       nombre: user.displayName,
+//       email: user.email,
+//       telefono: user.phoneNumber,
+//     } as Usuario;
+//   })
+//   .catch((error: any) => console.log(error));
+
+// this.dataResponse= response
+// this.dataResponse.forEach((user: any) =>{
+//   const obj={
+//   nombre: user.displayName,
+//   email: user.email,
+//   telefono: user.phoneNumber} as Usuario
+
+// this.arreglo_enviar.push(obj);
+// console.log(obj);
+// this.arreglo_enviar.nombre! = response.user.displayName!;
+//this.arreglo_enviar.email!=response.user.email?.valueOf();
+//  this.arreglo_enviar.id! = response.user.id;
+// this.arreglo_enviar.telefono! = response.user.phoneNumber!.valueOf();
+
+//  this.router.navigate(['/home']);
+//  this.user.newUser()
+// this.verificacionTelefono(this.arreglo_enviar);
+
+//

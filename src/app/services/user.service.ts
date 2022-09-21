@@ -27,7 +27,7 @@ export class UserService {
     return collectionData(databaseref,{idField:"id"})as Observable<Usuario[]>
   }
  
-  verificarUsuarioPost(body: Usuario) {
+  verificarUsuarioPost(body: any) {
     return this.http.post(`${this.URL_HTTP}/juego/poner`, { ...body });
   }
 
